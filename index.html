@@ -418,7 +418,8 @@ function renderSingle(q){
   const form = document.createElement('form'); form.id='singleForm';
   opts.forEach((o, i)=>{
     const div = document.createElement('div'); div.className='option';
-    div.innerHTML = `<label><input type="radio" name="choice" value="${o.key}"> <strong>${o.key}.</strong> ${o.text}</label>`;
+    // không hiển thị "A." nữa, chỉ show nội dung lựa chọn
+    div.innerHTML = `<label><input type="radio" name="choice" value="${o.key}"> ${o.text}</label>`;
     form.appendChild(div);
   });
   choicesDiv.appendChild(form);
@@ -437,12 +438,12 @@ function checkSingle(showOnly=false){
   const selected = form ? (form.elements['choice'] ? form.elements['choice'].value : null) : null;
   resultDiv.style.display = 'block';
   if(showOnly || !selected){
-    // show correct
+    // show correct (chỉ show text đáp án, không kèm chữ A./B.)
     const corr = currentSingle.q.answer;
     let corrText = corr;
     if(currentSingle.q.options && currentSingle.q.options.length){
       const f = currentSingle.q.options.find(o=>o.key===corr);
-      corrText = f ? `${corr}. ${f.text}` : corr;
+      corrText = f ? `${f.text}` : corr;
     } else {
       corrText = (corr==='Đ'?'Đúng':(corr==='S'?'Sai':corr));
     }
@@ -461,8 +462,9 @@ function checkSingle(showOnly=false){
     let corrText = correct;
     if(currentSingle.q.options && currentSingle.q.options.length){
       const f = currentSingle.q.options.find(o=>o.key===correct);
-      corrText = f ? `${correct}. ${f.text}` : correct;
+      corrText = f ? `${f.text}` : correct;
     } else corrText = (correct==='Đ'?'Đúng':(correct==='S'?'Sai':correct));
+    // chỉ hiển thị nội dung đáp án đúng
     resultDiv.innerHTML = `<strong>SAI.</strong> Đáp án đúng: <strong>${corrText}</strong>`;
     explainDiv.textContent = currentSingle.q.explain ? 'Ghi chú: ' + currentSingle.q.explain : '';
   }
@@ -503,7 +505,8 @@ function renderExam(){
     opts.forEach((o,j)=>{
       const rid = `q${idx}_opt${j}`;
       const wrap = document.createElement('div'); wrap.className='option';
-      wrap.innerHTML = `<label><input type="radio" name="q${idx}" value="${o.key}"> <strong>${o.key}.</strong> ${o.text}</label>`;
+      // không hiển thị "A." ở đây nữa
+      wrap.innerHTML = `<label><input type="radio" name="q${idx}" value="${o.key}"> ${o.text}</label>`;
       optCon.appendChild(wrap);
     });
     qdiv.appendChild(optCon);
@@ -541,7 +544,7 @@ function submitExam(){
       let corrText = correct;
       if(q.options && q.options.length){
         const f = q.options.find(o=>o.key===correct);
-        corrText = f ? `${correct}. ${f.text}` : correct;
+        corrText = f ? `${f.text}` : correct; // chỉ show text đáp án đúng
       } else corrText = (correct==='Đ'?'Đúng':(correct==='S'?'Sai':correct));
       ex.innerHTML = `<span style="color:#6b0b0b;font-weight:700">SAI — đáp án đúng: ${corrText}</span>` + (q.explain?('<div style="margin-top:6px;">Ghi chú: '+q.explain+'</div>'):'');
     }
