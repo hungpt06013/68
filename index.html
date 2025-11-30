@@ -3,80 +3,93 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Quiz — Random / Làm đề thi</title>
+<title>Quiz — Trang chủ</title>
 <style>
-  body { font-family: Arial, sans-serif; max-width:1100px; margin:20px auto; padding:12px; line-height:1.5; background:#f7f9fc; color:#111; }
-  .card { background:#fff; border:1px solid #e3e7ee; border-radius:10px; padding:18px; box-shadow:0 6px 18px rgba(30,40,50,0.06); }
-  header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-  h1 { margin:0; font-size:20px; }
-  .controls { display:flex; gap:8px; flex-wrap:wrap; }
-  button, a.btn { background:#2b7bf6; color:#fff; border:none; padding:8px 14px; border-radius:8px; cursor:pointer; text-decoration:none; font-weight:600; }
-  button.secondary { background:#6c757d; }
-  button.ghost { background:transparent; color:#2b7bf6; border:1px solid #cfe0ff; }
-  .question { margin-top:12px; font-weight:700; }
-  .options { margin-top:8px; }
-  .option { margin:6px 0; }
-  .result { margin-top:12px; padding:10px; border-radius:6px; }
-  .correct { background:#e6ffed; color:#065f2d; border:1px solid #b7f1c6; }
-  .wrong { background:#ffecec; color:#6b0b0b; border:1px solid #f2b3b3; }
-  .explain { margin-top:8px; font-size:0.95em; color:#333; }
-  .exam-meta { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
-  .exam-question { padding:10px; border-radius:8px; border:1px solid #f0f3f7; margin-bottom:10px; background:#fff; }
-  .qnum { font-weight:700; margin-right:8px; color:#2b7bf6; }
-  .summary { margin-top:12px; padding:12px; border-radius:8px; background:#fff; border:1px solid #e6eefc; }
-  .small { font-size:0.9em; color:#555; }
-  .sticky-actions { position:sticky; top:12px; background:transparent; padding:6px 0; z-index:10; }
-  .muted { color:#666; font-size:0.95em; }
-  @media (max-width:700px){ .controls{width:100%;} header{flex-direction:column;align-items:flex-start;} }
+  :root{--primary:#2b7bf6;--muted:#666;}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; background:#f3f6fb; margin:0; padding:18px; color:#111;}
+  .wrap{max-width:1000px;margin:0 auto;}
+  .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(30,40,50,0.06);border:1px solid #e9eef7}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  h1{margin:0;font-size:20px}
+  .home-actions{display:flex;gap:10px;margin-top:14px}
+  .btn{background:var(--primary);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+  .btn.secondary{background:#6c757d}
+  .btn.ghost{background:transparent;color:var(--primary);border:1px solid #d6e6ff}
+  .muted{color:var(--muted);font-size:0.95em}
+  main{margin-top:16px}
+  .question{font-weight:700;margin-bottom:8px}
+  .options .option{margin:6px 0}
+  .result{padding:10px;border-radius:8px;margin-top:10px}
+  .correct{background:#e6ffed;color:#065f2d;border:1px solid #b7f1c6}
+  .wrong{background:#ffecec;color:#6b0b0b;border:1px solid #f2b3b3}
+  .exam-question{padding:10px;border-radius:8px;background:#fff;border:1px solid #f0f3f7;margin-bottom:10px}
+  .qnum{color:var(--primary);font-weight:700;margin-right:8px}
+  .small{font-size:0.9em;color:var(--muted)}
+  footer{margin-top:14px;font-size:0.9em;color:var(--muted)}
+  @media (max-width:700px){header{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
-  <div class="card">
-    <header>
-      <div>
-        <h1>Quiz random — 55 câu</h1>
-        <div class="muted">Hai chế độ: lấy 1 câu ngẫu nhiên hoặc làm đề thi (55 câu).</div>
-      </div>
-      <div class="controls">
-        <a href="#" id="randomLink" class="btn">Lấy câu ngẫu nhiên</a>
-        <button id="examBtn" class="btn">Làm đề thi</button>
-        <button id="nextBtn" class="btn secondary">Câu tiếp theo</button>
-        <button id="checkBtn" class="btn">Kiểm tra (1 câu)</button>
-        <button id="revealBtn" class="btn ghost">Hiện đáp án (1 câu)</button>
-      </div>
-    </header>
-
-    <main id="mainArea" style="margin-top:14px;">
-      <div id="singleArea" class="">
-        <div id="qbox" class="question">Nhấn "Lấy câu ngẫu nhiên" để bắt đầu (chế độ 1 câu).</div>
-        <div id="choices" class="options"></div>
-        <div id="result" style="display:none" class="result"></div>
-        <div id="explain" class="explain"></div>
-      </div>
-
-      <div id="examArea" style="display:none; margin-top:12px;">
-        <div class="sticky-actions">
-          <button id="submitExam" class="btn">Nộp bài</button>
-          <button id="regenExam" class="btn secondary">Tạo đề khác</button>
-          <button id="backToSingle" class="btn ghost">Quay lại 1 câu</button>
-          <span class="small" style="margin-left:8px;">(55 câu — thứ tự câu và lựa chọn đã được xáo)</span>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div>
+          <h1>Trang chủ — Quiz 55 câu</h1>
+          <div class="muted">Chọn chế độ: làm 1 câu ngẫu nhiên hoặc làm đề 55 câu.</div>
         </div>
+        <div class="home-actions">
+          <button id="modeRandom" class="btn">Random 1 câu</button>
+          <button id="modeExam" class="btn">Làm đề thi (55 câu)</button>
+        </div>
+      </header>
 
-        <form id="examForm" style="margin-top:10px;"></form>
+      <main id="mainArea">
+        <!-- khu vực cho 1 câu -->
+        <section id="singleArea" style="display:none;margin-top:12px">
+          <div id="singleBox" class="">
+            <div id="qbox" class="question">—</div>
+            <div id="choices" class="options"></div>
 
-        <div id="examResult" style="display:none;" class="summary"></div>
-      </div>
-    </main>
+            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+              <button id="checkBtn" class="btn">Kiểm tra</button>
+              <button id="nextBtn" class="btn secondary">Câu tiếp theo</button>
+              <button id="backHome1" class="btn ghost">Quay lại trang chủ</button>
+            </div>
 
-    <footer style="margin-top:12px;">
-      <small class="small">Ghi chú: đáp án và giải thích nếu có sẽ hiển thị sau khi kiểm tra / nộp bài.</small>
-    </footer>
+            <div id="result" style="display:none" class="result"></div>
+            <div id="explain" class="small" style="margin-top:8px"></div>
+          </div>
+        </section>
+
+        <!-- khu vực cho đề thi -->
+        <section id="examArea" style="display:none;margin-top:12px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button id="startExam" class="btn">Tạo đề (random 55 câu)</button>
+            <button id="submitExam" class="btn secondary">Nộp bài</button>
+            <button id="regenExam" class="btn ghost">Tạo đề khác</button>
+            <button id="backHome2" class="btn ghost">Quay lại trang chủ</button>
+            <div class="small" style="margin-left:8px">55 câu — thứ tự câu & lựa chọn được xáo</div>
+          </div>
+
+          <form id="examForm" style="margin-top:12px"></form>
+          <div id="examResult" style="display:none;margin-top:12px" class="result"></div>
+        </section>
+
+        <!-- trang chủ (giới thiệu ngắn) -->
+        <section id="homeIntro" style="margin-top:18px">
+          <div class="small">Nhấn một trong hai nút trên để bắt đầu. "Random 1 câu" chỉ lấy 1 câu, "Làm đề thi" sẽ tạo 55 câu không lặp.</div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="small">Ghi chú: đáp án & ghi chú (nếu có) sẽ hiển thị sau khi kiểm tra / nộp bài.</div>
+      </footer>
+    </div>
   </div>
 
 <script>
-/* --- Dữ liệu câu hỏi (55 câu) --- */
-/* Nếu bạn đã có 1 file nguồn khác, thay mảng này bằng nội dung tương ứng */
-const questions = [
+/* --- Dữ liệu 55 câu (mình dùng bộ câu bạn đã cung cấp) --- */
+const QUESTIONS = [
   {id:1, text:"Trong quá trình trao đổi khí ở tế bào, loại khí nào sẽ khuếch tán từ máu vào tế bào?", options:[
     {key:'A', text:'Khí nitrogen'},
     {key:'B', text:'Khí carbon dioxide'},
@@ -356,259 +369,235 @@ const questions = [
   {id:55, text:"Các chất dinh dưỡng sau khi hấp thụ sẽ được sử dụng làm nguyên liệu cấu tạo nên các hợp chất đặc trưng cho tế bào. (Đ/S)", answer:'Đ', options:null }
 ];
 
-/* --- Utilities --- */
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+/* --- Helpers --- */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
   }
 }
 
-/* --- Single question mode state --- */
-let current = null;
+/* --- UI refs --- */
+const modeRandomBtn = document.getElementById('modeRandom');
+const modeExamBtn = document.getElementById('modeExam');
+const singleArea = document.getElementById('singleArea');
+const examArea = document.getElementById('examArea');
+const homeIntro = document.getElementById('homeIntro');
 
-/* render single question */
-function renderQuestion(q) {
-  const qbox = document.getElementById('qbox');
-  const choicesDiv = document.getElementById('choices');
-  const resultDiv = document.getElementById('result');
-  const explainDiv = document.getElementById('explain');
+const qbox = document.getElementById('qbox');
+const choicesDiv = document.getElementById('choices');
+const resultDiv = document.getElementById('result');
+const explainDiv = document.getElementById('explain');
+const checkBtn = document.getElementById('checkBtn');
+const nextBtn = document.getElementById('nextBtn');
+const backHome1 = document.getElementById('backHome1');
+
+const startExamBtn = document.getElementById('startExam');
+const submitExamBtn = document.getElementById('submitExam');
+const regenExamBtn = document.getElementById('regenExam');
+const backHome2 = document.getElementById('backHome2');
+const examForm = document.getElementById('examForm');
+const examResult = document.getElementById('examResult');
+
+/* --- State for single --- */
+let currentSingle = null;
+
+/* Render single question (shuffle choices) */
+function renderSingle(q){
+  qbox.textContent = `Câu #${q.id}: ${q.text}`;
+  choicesDiv.innerHTML = '';
   resultDiv.style.display = 'none';
   explainDiv.textContent = '';
-  choicesDiv.innerHTML = '';
 
-  qbox.textContent = 'Câu ' + q.id + ': ' + q.text;
-
-  // build choices
   let opts = [];
-  if (q.options && Array.isArray(q.options)) {
-    opts = q.options.map(o => ({ key: o.key, text: o.text }));
-  } else {
-    opts = [{ key: 'Đ', text: 'Đúng' }, { key: 'S', text: 'Sai' }];
-  }
+  if(q.options && q.options.length) opts = q.options.map(o=>({key:o.key,text:o.text}));
+  else opts = [{key:'Đ',text:'Đúng'},{key:'S',text:'Sai'}];
   shuffle(opts);
-  current = { q: q, shownOptions: opts };
+  currentSingle = {q, shown:opts};
 
-  const form = document.createElement('form');
-  form.id = 'qaForm';
-  opts.forEach((o, idx) => {
-    const id = 'opt_' + idx;
-    const div = document.createElement('div');
-    div.className = 'option';
-    div.innerHTML = `<label><input type="radio" name="choice" value="${o.key}" id="${id}"> <strong>${o.key}.</strong> ${o.text}</label>`;
+  const form = document.createElement('form'); form.id='singleForm';
+  opts.forEach((o, i)=>{
+    const div = document.createElement('div'); div.className='option';
+    div.innerHTML = `<label><input type="radio" name="choice" value="${o.key}"> <strong>${o.key}.</strong> ${o.text}</label>`;
     form.appendChild(div);
   });
-
   choicesDiv.appendChild(form);
 }
 
-/* pick random single question */
-function pickRandom() {
-  const idx = Math.floor(Math.random() * questions.length);
-  renderQuestion(questions[idx]);
+/* pick random single */
+function pickRandomSingle(){
+  const idx = Math.floor(Math.random()*QUESTIONS.length);
+  renderSingle(QUESTIONS[idx]);
 }
 
-/* check answer for single */
-function checkAnswer(showOnly = false) {
-  if (!current) return alert('Chưa có câu hỏi. Bấm "Lấy câu ngẫu nhiên" trước.');
-  const form = document.getElementById('qaForm');
-  if (!form) return;
-  const selected = form.elements['choice'] ? form.elements['choice'].value : null;
-
-  const resultDiv = document.getElementById('result');
-  const explainDiv = document.getElementById('explain');
+/* check single answer */
+function checkSingle(showOnly=false){
+  if(!currentSingle) return alert('Chưa có câu. Nhấn "Random 1 câu" trước.');
+  const form = document.getElementById('singleForm');
+  const selected = form ? (form.elements['choice'] ? form.elements['choice'].value : null) : null;
   resultDiv.style.display = 'block';
-
-  if (showOnly || !selected) {
-    const corr = current.q.answer;
-    let corrText = '';
-    if (current.q.options && current.q.options.length) {
-      const found = current.q.options.find(o => o.key === corr);
-      corrText = found ? `${corr}. ${found.text}` : corr;
+  if(showOnly || !selected){
+    // show correct
+    const corr = currentSingle.q.answer;
+    let corrText = corr;
+    if(currentSingle.q.options && currentSingle.q.options.length){
+      const f = currentSingle.q.options.find(o=>o.key===corr);
+      corrText = f ? `${corr}. ${f.text}` : corr;
     } else {
-      corrText = (corr === 'Đ' ? 'Đúng' : (corr === 'S' ? 'Sai' : corr));
+      corrText = (corr==='Đ'?'Đúng':(corr==='S'?'Sai':corr));
     }
-    resultDiv.className = 'result correct';
+    resultDiv.className='result correct';
     resultDiv.innerHTML = `<strong>Đáp án đúng:</strong> ${corrText}`;
-    explainDiv.textContent = current.q.explain ? 'Ghi chú: ' + current.q.explain : '';
+    explainDiv.textContent = currentSingle.q.explain ? 'Ghi chú: ' + currentSingle.q.explain : '';
     return;
   }
-
-  const correct = current.q.answer;
-  const isCorrect = (selected === correct);
-
-  if (isCorrect) {
-    resultDiv.className = 'result correct';
+  const correct = currentSingle.q.answer;
+  if(selected === correct){
+    resultDiv.className='result correct';
     resultDiv.innerHTML = '<strong>ĐÚNG.</strong>';
-    explainDiv.textContent = current.q.explain ? 'Ghi chú: ' + current.q.explain : '';
+    explainDiv.textContent = currentSingle.q.explain ? 'Ghi chú: ' + currentSingle.q.explain : '';
   } else {
-    resultDiv.className = 'result wrong';
+    resultDiv.className='result wrong';
     let corrText = correct;
-    if (current.q.options && current.q.options.length) {
-      const found = current.q.options.find(o => o.key === correct);
-      corrText = found ? `${correct}. ${found.text}` : correct;
-    } else {
-      corrText = (correct === 'Đ' ? 'Đúng' : (correct === 'S' ? 'Sai' : correct));
-    }
+    if(currentSingle.q.options && currentSingle.q.options.length){
+      const f = currentSingle.q.options.find(o=>o.key===correct);
+      corrText = f ? `${correct}. ${f.text}` : correct;
+    } else corrText = (correct==='Đ'?'Đúng':(correct==='S'?'Sai':correct));
     resultDiv.innerHTML = `<strong>SAI.</strong> Đáp án đúng: <strong>${corrText}</strong>`;
-    explainDiv.textContent = current.q.explain ? 'Ghi chú: ' + current.q.explain : '';
+    explainDiv.textContent = currentSingle.q.explain ? 'Ghi chú: ' + currentSingle.q.explain : '';
   }
 }
 
 /* --- Exam mode --- */
-let currentExam = null; // array of {q:..., shownOptions: [...]}
+let currentExam = null; // array of {q, shownOptions}
 
-/* Generate exam: random 55 questions and shuffle options per question */
-function generateExam() {
-  const pool = questions.slice(); // copy
+function generateExam(){
+  // copy pool and shuffle
+  const pool = QUESTIONS.slice();
   shuffle(pool);
-  const examList = pool.slice(0, 55); // take first 55 (we have exactly 55)
-  // For each question, prepare options shuffled
-  const examPrepared = examList.map(q => {
-    let opts = [];
-    if (q.options && q.options.length) opts = q.options.map(o => ({ key: o.key, text: o.text }));
-    else opts = [{ key: 'Đ', text: 'Đúng' }, { key: 'S', text: 'Sai' }];
+  const chosen = pool.slice(0, 55);
+  const prepared = chosen.map(q=>{
+    let opts = q.options && q.options.length ? q.options.map(o=>({key:o.key,text:o.text})) : [{key:'Đ',text:'Đúng'},{key:'S',text:'Sai'}];
     shuffle(opts);
-    return { q: q, shownOptions: opts };
+    return {q, shown:opts};
   });
-  currentExam = examPrepared;
+  currentExam = prepared;
   renderExam();
 }
 
-/* Render full exam on page */
-function renderExam() {
-  document.getElementById('singleArea').style.display = 'none';
-  const examArea = document.getElementById('examArea');
-  examArea.style.display = 'block';
-  const form = document.getElementById('examForm');
-  form.innerHTML = '';
-  currentExam.forEach((item, idx) => {
+function renderExam(){
+  // hide single, show exam
+  singleArea.style.display='none';
+  examArea.style.display='block';
+  homeIntro.style.display='none';
+  examForm.innerHTML = '';
+  examResult.style.display = 'none';
+
+  currentExam.forEach((item, idx)=>{
     const q = item.q;
-    const opts = item.shownOptions;
-    const qDiv = document.createElement('div');
-    qDiv.className = 'exam-question';
-    qDiv.id = 'exam_q_' + idx;
-    const qnum = document.createElement('div');
-    qnum.innerHTML = `<span class="qnum">${idx + 1}</span> <span class="small">Câu gốc #${q.id}</span><div style="margin-top:6px;font-weight:700;">${q.text}</div>`;
-    qDiv.appendChild(qnum);
-
-    const optContainer = document.createElement('div');
-    optContainer.className = 'options';
-    opts.forEach((o, j) => {
-      const rid = `exam_${idx}_opt_${j}`;
-      const wrap = document.createElement('div');
-      wrap.className = 'option';
-      wrap.innerHTML = `<label><input type="radio" name="q${idx}" value="${o.key}" id="${rid}"> <strong>${o.key}.</strong> ${o.text}</label>`;
-      optContainer.appendChild(wrap);
+    const opts = item.shown;
+    const qdiv = document.createElement('div'); qdiv.className='exam-question'; qdiv.id = 'exam_q_'+idx;
+    qdiv.innerHTML = `<div><span class="qnum">${idx+1}</span> <span class="small"> (câu gốc #${q.id})</span></div>
+      <div style="font-weight:700;margin-top:6px">${q.text}</div>`;
+    const optCon = document.createElement('div'); optCon.className='options';
+    opts.forEach((o,j)=>{
+      const rid = `q${idx}_opt${j}`;
+      const wrap = document.createElement('div'); wrap.className='option';
+      wrap.innerHTML = `<label><input type="radio" name="q${idx}" value="${o.key}"> <strong>${o.key}.</strong> ${o.text}</label>`;
+      optCon.appendChild(wrap);
     });
-    qDiv.appendChild(optContainer);
+    qdiv.appendChild(optCon);
+    // explain area
+    const ex = document.createElement('div'); ex.className='small'; ex.id = 'ex_'+idx; ex.style.marginTop='8px';
+    qdiv.appendChild(ex);
 
-    // hidden explain area to show after submit
-    const explainDiv = document.createElement('div');
-    explainDiv.className = 'explain';
-    explainDiv.id = `explain_${idx}`;
-    qDiv.appendChild(explainDiv);
-
-    form.appendChild(qDiv);
+    examForm.appendChild(qdiv);
   });
 
-  // ensure examResult hidden
-  document.getElementById('examResult').style.display = 'none';
   // scroll to top
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* Submit and grade exam */
-function submitExam() {
-  if (!currentExam || currentExam.length === 0) return alert('Chưa có đề. Bấm "Làm đề thi" để tạo đề.');
-  const form = document.getElementById('examForm');
+/* submit exam */
+function submitExam(){
+  if(!currentExam) return alert('Chưa có đề. Nhấn "Tạo đề" trước.');
+  if(!confirm('Bạn chắc chắn nộp bài? Sau khi nộp sẽ hiện đáp án và khoá chọn.')) return;
+  const form = examForm;
   let correctCount = 0;
-  currentExam.forEach((item, idx) => {
+  currentExam.forEach((item, idx)=>{
     const q = item.q;
-    const userAnswer = form.elements['q' + idx] ? form.elements['q' + idx].value : null;
+    const user = form.elements['q'+idx] ? form.elements['q'+idx].value : null;
     const correct = q.answer;
-    const questionDiv = document.getElementById('exam_q_' + idx);
-    const explainDiv = document.getElementById('explain_' + idx);
-
-    // Disable inputs for this question
-    const inputs = questionDiv.querySelectorAll('input[type=radio]');
-    inputs.forEach(inp => inp.disabled = true);
-
-    if (userAnswer && userAnswer === correct) {
+    const qdiv = document.getElementById('exam_q_'+idx);
+    // disable inputs
+    qdiv.querySelectorAll('input[type=radio]').forEach(inp=>inp.disabled=true);
+    const ex = document.getElementById('ex_'+idx);
+    if(user && user === correct){
       correctCount++;
-      questionDiv.style.border = '1px solid #c7f0d0';
-      explainDiv.innerHTML = '<div style="color:#065f2d;font-weight:700">ĐÚNG</div>' + (q.explain ? '<div style="margin-top:6px;">Ghi chú: ' + q.explain + '</div>' : '');
+      qdiv.style.border = '1px solid #c7f0d0';
+      ex.innerHTML = '<span style="color:#065f2d;font-weight:700">ĐÚNG</span>' + (q.explain?('<div style="margin-top:6px;">Ghi chú: '+q.explain+'</div>'):'');
     } else {
-      questionDiv.style.border = '1px solid #f7caca';
-      // find correct text
+      qdiv.style.border = '1px solid #f7caca';
       let corrText = correct;
-      if (q.options && q.options.length) {
-        const found = q.options.find(o => o.key === correct);
-        corrText = found ? `${correct}. ${found.text}` : correct;
-      } else {
-        corrText = (correct === 'Đ' ? 'Đúng' : (correct === 'S' ? 'Sai' : correct));
-      }
-      explainDiv.innerHTML = `<div style="color:#6b0b0b;font-weight:700">SAI — đáp án đúng: ${corrText}</div>` + (q.explain ? '<div style="margin-top:6px;">Ghi chú: ' + q.explain + '</div>' : '');
+      if(q.options && q.options.length){
+        const f = q.options.find(o=>o.key===correct);
+        corrText = f ? `${correct}. ${f.text}` : correct;
+      } else corrText = (correct==='Đ'?'Đúng':(correct==='S'?'Sai':correct));
+      ex.innerHTML = `<span style="color:#6b0b0b;font-weight:700">SAI — đáp án đúng: ${corrText}</span>` + (q.explain?('<div style="margin-top:6px;">Ghi chú: '+q.explain+'</div>'):'');
     }
   });
-
   // show summary
-  const total = currentExam.length;
-  const percent = Math.round((correctCount / total) * 100);
-  const examResult = document.getElementById('examResult');
   examResult.style.display = 'block';
-  examResult.innerHTML = `<div style="font-size:1.05em;font-weight:700">Kết quả: ${correctCount} / ${total} đúng (${percent}%)</div>
-    <div class="small" style="margin-top:6px;">Bạn có thể bấm "Tạo đề khác" để làm lại đề khác, hoặc "Quay lại 1 câu" để dùng chế độ 1 câu.</div>`;
-  // scroll to result
-  examResult.scrollIntoView({ behavior: 'smooth' });
+  examResult.className = 'result';
+  const total = currentExam.length;
+  const pct = Math.round((correctCount/total)*100);
+  examResult.innerHTML = `<div style="font-weight:700">Kết quả: ${correctCount} / ${total} đúng (${pct}%)</div>
+    <div class="small" style="margin-top:6px">Bấm "Tạo đề khác" để random lại đề mới.</div>`;
+  examResult.scrollIntoView({behavior:'smooth'});
 }
 
-/* Reset to single-question view */
-function backToSingle() {
-  document.getElementById('examArea').style.display = 'none';
-  document.getElementById('singleArea').style.display = 'block';
-  // clear exam UI
-  document.getElementById('examForm').innerHTML = '';
-  currentExam = null;
-  // scroll up
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+/* --- Events wiring --- */
+modeRandomBtn.addEventListener('click', ()=>{
+  // show single UI
+  homeIntro.style.display='none';
+  examArea.style.display='none';
+  singleArea.style.display='block';
+  pickRandomSingle();
+});
 
-/* --- Events --- */
-document.getElementById('randomLink').addEventListener('click', function(e){
-  e.preventDefault();
-  pickRandom();
+modeExamBtn.addEventListener('click', ()=>{
+  // hide home, show exam area and prepare when click "Tạo đề"
+  homeIntro.style.display='none';
+  singleArea.style.display='none';
+  examArea.style.display='block';
+  examForm.innerHTML='';
+  examResult.style.display='none';
 });
-document.getElementById('nextBtn').addEventListener('click', function(){
-  pickRandom();
+
+checkBtn.addEventListener('click', ()=>checkSingle(false));
+nextBtn.addEventListener('click', ()=>pickRandomSingle());
+backHome1.addEventListener('click', ()=>{
+  singleArea.style.display='none';
+  homeIntro.style.display='block';
 });
-document.getElementById('checkBtn').addEventListener('click', function(){
-  checkAnswer(false);
-});
-document.getElementById('revealBtn').addEventListener('click', function(){
-  checkAnswer(true);
-});
-document.getElementById('examBtn').addEventListener('click', function(){
+
+startExamBtn.addEventListener('click', ()=>generateExam());
+submitExamBtn.addEventListener('click', (e)=>{ e.preventDefault(); submitExam(); });
+regenExamBtn.addEventListener('click', ()=>{
+  if(!confirm('Tạo đề khác — sẽ xóa đề hiện tại. Tiếp tục?')) return;
   generateExam();
 });
-document.getElementById('submitExam').addEventListener('click', function(e){
-  e.preventDefault();
-  if(!confirm('Bạn chắc chắn nộp bài? Sau khi nộp sẽ hiện đáp án và không thể thay đổi câu đã chọn.')) return;
-  submitExam();
-});
-document.getElementById('regenExam').addEventListener('click', function(e){
-  e.preventDefault();
-  if(!confirm('Tạo đề khác sẽ làm mất trạng thái đề hiện tại. Tiếp tục?')) return;
-  generateExam();
-});
-document.getElementById('backToSingle').addEventListener('click', function(e){
-  e.preventDefault();
-  backToSingle();
+backHome2.addEventListener('click', ()=>{
+  examArea.style.display='none';
+  homeIntro.style.display='block';
+  examForm.innerHTML='';
+  currentExam=null;
 });
 
-/* Optional: show an initial random single question on load */
-// pickRandom();
-
+/* back/initial state: show home intro */
+homeIntro.style.display='block';
+singleArea.style.display='none';
+examArea.style.display='none';
 </script>
 </body>
 </html>
