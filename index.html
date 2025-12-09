@@ -392,23 +392,31 @@ function renderSingle() {
   explain.textContent = '';
   qbox.innerHTML = currentSingle.q.text;
   choices.innerHTML = '';
+
+  // phát hiện đây là câu nhiều đáp án
+  const isMultiple = Array.isArray(currentSingle.q.answer) || currentSingle.q.type === 'multiple';
+
   currentSingle.shown.forEach((o, j) => {
     const wrap = document.createElement('div');
     wrap.className = 'option';
-    wrap.innerHTML = `<label><input type="radio" name="single" value="${o.key}"> ${o.text}</label>`;
+    const inputType = isMultiple ? 'checkbox' : 'radio';
+    wrap.innerHTML = `<label><input type="${inputType}" name="single" value="${o.key}"> ${o.text}</label>`;
     choices.appendChild(wrap);
   });
 }
 
+
 function checkSingle() {
-  const selected = document.querySelector('input[name="single"]:checked');
-  if (!selected) return alert('Chọn đáp án trước.');
+  // lấy tất cả ô đã checked (phù hợp cả radio lẫn checkbox)
+  const checkedInputs = Array.from(document.querySelectorAll('input[name="single"]:checked'));
+  if (!checkedInputs.length) return alert('Chọn đáp án trước.');
+
   result.style.display = 'block';
   const correct = currentSingle.q.answer;
-  if (Array.isArray(correct)) { // for multiple
-    const allSelected = Array.from(document.querySelectorAll('input[name="single"]:checked')).map(inp => inp.value);
+  if (Array.isArray(correct)) { // câu multiple
+    const allSelected = checkedInputs.map(inp => inp.value);
     const sortedSel = allSelected.sort();
-    const sortedCorr = correct.sort();
+    const sortedCorr = correct.slice().sort();
     if (sortedSel.join(',') === sortedCorr.join(',')) {
       result.className = 'result correct';
       result.innerHTML = '<strong>ĐÚNG.</strong>';
@@ -417,7 +425,8 @@ function checkSingle() {
       const corrTexts = correct.map(k => currentSingle.q.options.find(o => o.key === k).text).join(', ');
       result.innerHTML = `<strong>SAI.</strong> Đáp án đúng: ${corrTexts}`;
     }
-  } else {
+  } else { // câu single
+    const selected = checkedInputs[0]; // radio trả về 1 phần tử
     if (selected.value === correct) {
       result.className = 'result correct';
       result.innerHTML = '<strong>ĐÚNG.</strong>';
@@ -428,6 +437,7 @@ function checkSingle() {
     }
   }
 }
+
 
 /* --- Exam mode --- */
 let currentExam = null;
