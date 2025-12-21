@@ -26,8 +26,13 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 const presenceRef = database.ref('presence');
 
-// Tạo ID ngẫu nhiên cho user
-const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+// Tạo hoặc lấy ID cho session này (dùng sessionStorage thay vì tạo mới mỗi lần)
+let userId = sessionStorage.getItem('userId');
+if (!userId) {
+  userId = 'user_' + Math.random().toString(36).substr(2, 9);
+  sessionStorage.setItem('userId', userId);
+}
+
 const myPresenceRef = presenceRef.child(userId);
 
 // Đánh dấu online khi vào trang
@@ -48,6 +53,18 @@ presenceRef.on('value', (snapshot) => {
 // Cleanup khi tắt tab/trình duyệt
 window.addEventListener('beforeunload', () => {
   myPresenceRef.remove();
+});
+
+// Xử lý khi tab bị ẩn (người dùng chuyển sang tab khác)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    myPresenceRef.update({ lastSeen: Date.now() });
+  } else {
+    myPresenceRef.set({
+      online: true,
+      timestamp: Date.now()
+    });
+  }
 });
 </script>
 </head>
