@@ -1766,7 +1766,7 @@ setInterval(() => {
       timestamp: Date.now()
     });
   }
-}, 5000);
+}, 1000);
 
 // Xử lý khi tab bị ẩn
 document.addEventListener('visibilitychange', () => {
@@ -1786,7 +1786,7 @@ document.addEventListener('visibilitychange', () => {
 window.cleanupOldPresence = function() {
   presenceRef.once('value', (snapshot) => {
     const now = Date.now();
-    const oneMinuteAgo = now - 60000;
+    const oneMinuteAgo = now - 10000;
     
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
