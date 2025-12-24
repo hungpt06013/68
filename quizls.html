@@ -201,6 +201,7 @@ let state = {
         "Bài 11": true, "Bài 12": true, "Bài 13": true, "Bài 14": true
     },
     currentQuestion: null,
+	previousQuestion: null,
     userAnswers: {},
     showResult: false,
     score: { correct: 0, total: 0 },
@@ -345,7 +346,41 @@ function getRandomQuestion() {
     }
 
     let tries = 0;
-    while (tries < 20) {
+    let selectedQuestion = null;
+    
+    // Lặp tối đa 50 lần để tìm câu hỏi khác câu trước
+    while (tries < 50) {
+        const randomLesson = availableLessons[Math.floor(Math.random() * availableLessons.length)];
+        const questions = quizData[randomLesson];
+        
+        if (questions && questions.length > 0) {
+            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+            
+            // Kiểm tra xem câu hỏi này có giống câu trước không
+            const isDifferent = !state.previousQuestion || 
+                               randomQuestion.question !== state.previousQuestion.question ||
+                               randomLesson !== state.previousQuestion.lesson;
+            
+            if (isDifferent) {
+                const indices = shuffleArray([0,1,2,3]);
+                const shuffledOptions = indices.map(i => randomQuestion.options[i]);
+                const shuffledAnswers = indices.map(i => randomQuestion.answers[i]);
+                
+                selectedQuestion = {
+                    ...randomQuestion,
+                    options: shuffledOptions,
+                    answers: shuffledAnswers,
+                    lesson: randomLesson
+                };
+                break; // Tìm thấy câu khác, thoát vòng lặp
+            }
+        }
+        tries++;
+    }
+    
+    // Nếu sau 50 lần vẫn không tìm được câu khác (trường hợp chỉ có 1 câu duy nhất)
+    // thì trả về câu bất kỳ
+    if (!selectedQuestion && availableLessons.length > 0) {
         const randomLesson = availableLessons[Math.floor(Math.random() * availableLessons.length)];
         const questions = quizData[randomLesson];
         if (questions && questions.length > 0) {
@@ -353,16 +388,16 @@ function getRandomQuestion() {
             const indices = shuffleArray([0,1,2,3]);
             const shuffledOptions = indices.map(i => randomQuestion.options[i]);
             const shuffledAnswers = indices.map(i => randomQuestion.answers[i]);
-            return {
+            selectedQuestion = {
                 ...randomQuestion,
                 options: shuffledOptions,
                 answers: shuffledAnswers,
                 lesson: randomLesson
             };
         }
-        tries++;
     }
-    return null;
+    
+    return selectedQuestion;
 }
 
 // ---------- UI rendering ----------
@@ -544,6 +579,14 @@ function submitAnswer() {
 }
 
 function nextQuestion() {
+    // Lưu câu hỏi hiện tại vào previousQuestion trước khi lấy câu mới
+    if (state.currentQuestion) {
+        state.previousQuestion = {
+            question: state.currentQuestion.question,
+            lesson: state.currentQuestion.lesson
+        };
+    }
+    
     const q = getRandomQuestion();
     state.currentQuestion = q;
     state.userAnswers = {};
