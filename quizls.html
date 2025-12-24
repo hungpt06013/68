@@ -201,13 +201,19 @@ let state = {
         "Bài 11": true, "Bài 12": true, "Bài 13": true, "Bài 14": true
     },
     currentQuestion: null,
-	previousQuestion: null,
+    previousQuestion: null,
     userAnswers: {},
     showResult: false,
     score: { correct: 0, total: 0 },
     questionCount: 0,
-	showLessonHint: false
+    showLessonHint: false,
+    askedQuestions: new Set(),
+    totalAvailableQuestions: 0,
+    currentCycle: 1
 };
+
+// Expose state globally
+window.state = state;
 
 const quizData = {
     "Bài 6": [
@@ -332,6 +338,26 @@ function shuffleArray(arr) {
     return indices;
 }
 
+function calculateTotalQuestions() {
+    const activeLessons = Object.keys(state.selectedLessons).filter(l => state.selectedLessons[l]);
+    let total = 0;
+    
+    activeLessons.forEach(lesson => {
+        if (quizData[lesson]) {
+            total += quizData[lesson].length;
+        }
+    });
+    
+    if (state.selectedLessons["Bài 6"] && state.selectedLessons["Bài 7"] && quizData["Bài 6+7"]) {
+        total += quizData["Bài 6+7"].length;
+    }
+    if (state.selectedLessons["Bài 8"] && state.selectedLessons["Bài 9"] && state.selectedLessons["Bài 10"] && quizData["Bài 8+9+10"]) {
+        total += quizData["Bài 8+9+10"].length;
+    }
+    
+    return total;
+}
+
 function getRandomQuestion() {
     const activeLessons = Object.keys(state.selectedLessons).filter(l => state.selectedLessons[l]);
     if (activeLessons.length === 0) return null;
@@ -345,23 +371,28 @@ function getRandomQuestion() {
         availableLessons.push("Bài 8+9+10");
     }
 
+    state.totalAvailableQuestions = calculateTotalQuestions();
+    
+    if (state.askedQuestions.size >= state.totalAvailableQuestions) {
+        console.log(`🔄 Đã hoàn thành ${state.totalAvailableQuestions} câu! Bắt đầu chu kỳ ${state.currentCycle + 1}.`);
+        state.askedQuestions.clear();
+        state.currentCycle++;
+    }
+
     let tries = 0;
     let selectedQuestion = null;
+    const maxTries = 100;
     
-    // Lặp tối đa 50 lần để tìm câu hỏi khác câu trước
-    while (tries < 50) {
+    while (tries < maxTries) {
         const randomLesson = availableLessons[Math.floor(Math.random() * availableLessons.length)];
         const questions = quizData[randomLesson];
         
         if (questions && questions.length > 0) {
-            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            const randomQuestion = questions[randomIndex];
+            const questionKey = `${randomLesson}|${randomQuestion.question}`;
             
-            // Kiểm tra xem câu hỏi này có giống câu trước không
-            const isDifferent = !state.previousQuestion || 
-                               randomQuestion.question !== state.previousQuestion.question ||
-                               randomLesson !== state.previousQuestion.lesson;
-            
-            if (isDifferent) {
+            if (!state.askedQuestions.has(questionKey)) {
                 const indices = shuffleArray([0,1,2,3]);
                 const shuffledOptions = indices.map(i => randomQuestion.options[i]);
                 const shuffledAnswers = indices.map(i => randomQuestion.answers[i]);
@@ -370,31 +401,22 @@ function getRandomQuestion() {
                     ...randomQuestion,
                     options: shuffledOptions,
                     answers: shuffledAnswers,
-                    lesson: randomLesson
+                    lesson: randomLesson,
+                    questionKey: questionKey
                 };
-                break; // Tìm thấy câu khác, thoát vòng lặp
+                
+                state.askedQuestions.add(questionKey);
+                break;
             }
         }
         tries++;
     }
     
-    // Nếu sau 50 lần vẫn không tìm được câu khác (trường hợp chỉ có 1 câu duy nhất)
-    // thì trả về câu bất kỳ
-    if (!selectedQuestion && availableLessons.length > 0) {
-        const randomLesson = availableLessons[Math.floor(Math.random() * availableLessons.length)];
-        const questions = quizData[randomLesson];
-        if (questions && questions.length > 0) {
-            const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-            const indices = shuffleArray([0,1,2,3]);
-            const shuffledOptions = indices.map(i => randomQuestion.options[i]);
-            const shuffledAnswers = indices.map(i => randomQuestion.answers[i]);
-            selectedQuestion = {
-                ...randomQuestion,
-                options: shuffledOptions,
-                answers: shuffledAnswers,
-                lesson: randomLesson
-            };
-        }
+    if (!selectedQuestion && state.askedQuestions.size > 0) {
+        console.log('⚠️ Không tìm được câu mới, reset danh sách...');
+        state.askedQuestions.clear();
+        state.currentCycle++;
+        return getRandomQuestion();
     }
     
     return selectedQuestion;
@@ -421,6 +443,9 @@ function toggleLesson(lesson) {
         return;
     }
     state.selectedLessons[lesson] = !state.selectedLessons[lesson];
+    state.askedQuestions.clear();
+    state.currentCycle = 1;
+    console.log('🔄 Đã reset danh sách câu hỏi do thay đổi bài học');
     renderLessonSelector();
 
     if (state.currentQuestion && !isLessonAvailable(state.currentQuestion.lesson)) {
@@ -445,6 +470,8 @@ function updateScoreDisplay() {
         const percent = state.score.total > 0 ? Math.round((state.score.correct / state.score.total) * 100) : 0;
         percentEl.textContent = percent + '%';
     }
+    
+    console.log(`📊 Tiến độ: ${state.askedQuestions.size}/${state.totalAvailableQuestions} câu | Chu kỳ ${state.currentCycle}`);
 }
 
 function renderQuestion() {
@@ -460,7 +487,6 @@ function renderQuestion() {
         return;
     }
 
-    // lesson badge: chỉ hiện khi state.showLessonHint === true
     const lessonBadgeEl = document.getElementById('lessonBadge');
     if (lessonBadgeEl) {
         lessonBadgeEl.textContent = state.currentQuestion.lesson || '';
@@ -468,7 +494,9 @@ function renderQuestion() {
     }
 
     const questionNumberEl = document.getElementById('questionNumber');
-    if (questionNumberEl) questionNumberEl.textContent = `Câu hỏi #${state.questionCount}`;
+    if (questionNumberEl) {
+        questionNumberEl.textContent = `Câu hỏi #${state.questionCount} (${state.askedQuestions.size}/${state.totalAvailableQuestions})`;
+    }
 
     const questionTextEl = document.getElementById('questionText');
     if (questionTextEl) questionTextEl.textContent = state.currentQuestion.question;
@@ -548,7 +576,6 @@ function renderQuestion() {
 // ---------- actions ----------
 function toggleShowLesson(value) {
     state.showLessonHint = !!value;
-    // cập nhật UI ngay
     renderQuestion();
 }
 
@@ -579,7 +606,6 @@ function submitAnswer() {
 }
 
 function nextQuestion() {
-    // Lưu câu hỏi hiện tại vào previousQuestion trước khi lấy câu mới
     if (state.currentQuestion) {
         state.previousQuestion = {
             question: state.currentQuestion.question,
@@ -597,11 +623,39 @@ function nextQuestion() {
         state.questionCount = 0;
     }
     renderQuestion();
+    updateScoreDisplay();
 }
 
 function skipQuestion() {
     nextQuestion();
 }
+
+// ---------- Debug functions ----------
+function showStatistics() {
+    console.log('📈 THỐNG KÊ:');
+    console.log(`   Tổng câu có sẵn: ${state.totalAvailableQuestions}`);
+    console.log(`   Đã hỏi trong chu kỳ này: ${state.askedQuestions.size}`);
+    console.log(`   Còn lại: ${state.totalAvailableQuestions - state.askedQuestions.size}`);
+    console.log(`   Chu kỳ hiện tại: ${state.currentCycle}`);
+    console.log(`   Tổng câu đã làm: ${state.questionCount}`);
+}
+
+window.showStats = showStatistics;
+window.resetProgress = function() {
+    if (confirm('🔄 Bạn có muốn reset toàn bộ tiến độ?')) {
+        state.askedQuestions.clear();
+        state.currentCycle = 1;
+        state.questionCount = 0;
+        state.score = { correct: 0, total: 0 };
+        updateScoreDisplay();
+        console.log('✅ Đã reset tiến độ!');
+        nextQuestion();
+    }
+};
+
+console.log('💡 Lệnh hữu ích:');
+console.log('   - showStats() : Xem thống kê tiến độ');
+console.log('   - resetProgress() : Reset toàn bộ tiến độ');
 
 // ---------- initialize ----------
 renderLessonSelector();
@@ -614,7 +668,6 @@ if (state.currentQuestion) {
 renderQuestion();
 updateScoreDisplay();
 
-// ensure checkbox initial state is unchecked in UI
 const cb = document.getElementById('showLessonCheckbox');
 if (cb) cb.checked = false;
 
