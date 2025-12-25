@@ -162,7 +162,33 @@
     <div class="mt-4 text-xs bg-white/20 rounded-full px-3 py-1 w-fit mx-auto">Mở trong trang</div>
   </div>
 </button>
+<button id="selectLichSu" class="group relative overflow-hidden bg-gradient-to-br from-amber-600 to-amber-700 text-white p-8 rounded-xl hover:from-amber-700 hover:to-amber-800 transition-all transform hover:scale-[1.02] shadow-lg">
+  <div class="relative z-10">
+    <div class="flex items-center justify-center mb-4">
+      <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+      </svg>
+    </div>
+    <h3 class="text-2xl font-bold mb-2">LS</h3>
+    <p class="text-amber-100 text-sm">Lịch sử</p>
+    <div class="mt-4 text-xs bg-white/20 rounded-full px-3 py-1 w-fit mx-auto">22 câu hỏi</div>
+  </div>
+</button>
 
+<!-- Button Địa lý (MỚI) -->
+<button id="selectDiaLy" class="group relative overflow-hidden bg-gradient-to-br from-teal-600 to-teal-700 text-white p-8 rounded-xl hover:from-teal-700 hover:to-teal-800 transition-all transform hover:scale-[1.02] shadow-lg">
+  <div class="relative z-10">
+    <div class="flex items-center justify-center mb-4">
+      <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 002-2 2 2 0 114 0 2 2 0 002 2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <h3 class="text-2xl font-bold mb-2">ĐL</h3>
+    <p class="text-teal-100 text-sm">Địa lý</p>
+    <div class="mt-4 text-xs bg-white/20 rounded-full px-3 py-1 w-fit mx-auto">24 câu hỏi</div>
+  </div>
+</button>
 
           </div>
         </div>
@@ -957,8 +983,103 @@
             answers: [true, true, true, false]
           }
         ] // end tin hoc questions
-      } // end tinhoc
-	  
+      }, // end tinhoc
+	    'ls': {
+    name: 'Lịch sử',
+	fullName: 'Lịch sử',
+    questions: [
+      { type: 'mcq', q: "Từ thế kỉ VII đến giữa thế kỉ XIX, Trung Quốc đã trải qua các triều đại", o: ["Tần, Hán, Tùy, Nguyên, Minh, Thanh.", "Tùy, Đường, Tống, Nguyên, Minh, Thanh.", "Đường, Ngũ Đại, Tống, Nguyên, Minh, Thanh.", "Đường, Tống, Nguyên, Ngũ Đại, Minh, Thanh."], c: 2 },
+      { type: 'mcq', q: "Hai triều đại \"ngoại tộc\" ở Trung Quốc là", o: ["Tần và Đường.", "Nguyên và Thanh.", "Đường và Thanh.", "Tống và Nguyên."], c: 1 },
+      { type: 'mcq', q: "Chế độ phong kiến chuyên chế ở Trung Quốc phát triển đến đỉnh cao dưới thời kì cai trị của triều đại nào?", o: ["Nhà Nguyên.", "Nhà Đường.", "Nhà Minh.", "Nhà Hán."], c: 1 },
+      { type: 'mcq', q: "Triều đại phong kiến cuối cùng ở Trung Quốc là", o: ["Thanh.", "Minh.", "Nguyên.", "Tống."], c: 0 },
+      { type: 'mcq', q: "Kinh tế Trung Quốc dưới thời Minh – Thanh có đặc điểm gì nổi bật?", o: ["Hình thành một số đô thị với nhiều ngành thủ công truyền thống.", "Kinh tế không phát triển do bị các chính sách của nhà nước kìm hãm.", "Công thương nghiệp phát triển, xuất hiện mầm mống kinh tế tư bản chủ nghĩa.", "Các xưởng thủ công lớn xuất hiện ở nhiều nơi."], c: 2 },
+      { type: 'mcq', q: "Trong thời phong kiến, Nho giáo trở thành hệ tư tưởng và đạo đức của giai cấp phong kiến bởi vì", o: ["Nho giáo phù hợp với phong tục tập quán của người dân Trung Quốc.", "Nho giáo tạo ra hệ thống tôn ti trật tự, lễ giáo phục vụ cho sự thống trị của giai cấp phong kiến.", "Nho giáo được mọi giai cấp trong xã hội Trung Quốc ủng hộ.", "Nho giáo chủ trương dùng pháp luật hà khắc để duy trì trật tự xã hội."], c: 1 },
+      { type: 'mcq', q: "Tứ đại phát minh của Trung Quốc gồm những phát minh nào sau đây?", o: ["Giấy, thuốc súng, đồ sứ, la bàn.", "Giấy, kĩ thuật in, thuốc súng, la bàn.", "Giấy, la bàn, kĩ thuật luyện sắt, thuốc súng.", "Giấy, nghề in, đồ sứ, la bàn."], c: 1 },
+      { type: 'mcq', q: "Từ đại danh tác của nền văn học Trung Quốc thời Minh, Thanh là", o: ["Tây du ký, Thuỷ hử, Hồng lâu mộng, Liêu trai chí dị.", "Tây du ký, Thuỷ hử, Đông Chu liệt quốc, Tam quốc diễn nghĩa.", "Tây du ký, Kim Văn Kiều, Hồng lâu mộng, Tam quốc diễn nghĩa.", "Tây du ký, Thuỷ hử, Hồng lâu mộng, Tam quốc diễn nghĩa."], c: 3 },
+      { type: 'mcq', q: "Người đặt nền móng cho nền sử học Trung Quốc là", o: ["Thi Nại Am.", "Tư Mã Thiên.", "La Quán Trung.", "Đỗ Phủ."], c: 1 },
+      { type: 'mcq', q: "Tôn giáo chính ở Ấn Độ thời kì Gúp-ta là", o: ["Phật Giáo.", "Hin-đu giáo.", "Hồi giáo.", "Thiên Chúa giáo."], c: 1 },
+      { type: 'mcq', q: "Trung tâm giáo dục bậc cao trong suốt thời kì Gúp-ta là", o: ["Trường Đại học Hin-đu giáo Na-lan-da.", "Trường Đại học Phật giáo Na-lan-da.", "Trường Hoàng gia Ấn.", "Trường Đại học Gúp-ta."], c: 1 },
+      { type: 'mcq', q: "Một thành tựu y học thời Gúp-ta liên quan đến y tế công đồng ngày nay là biết", o: ["mổ hở.", "chế tạo vắc-xin.", "giải phẫu cơ thể.", "chế tạo thuốc mê."], c: 1 },
+      { type: 'mcq', q: "Thực quyền trong xã hội vương triều Hồi giáo Đê-li là", o: ["người Ấn bản địa theo đạo Hồi.", "người Hồi giáo gốc Thổ Nhĩ Kỳ.", "người theo Phật giáo.", "người theo Hin-đu giáo."], c: 1 },
+      { type: 'mcq', q: "Một trong những chính sách phát triển giáo dục được A-cơ-ba thi hành là", o: ["mời các chuyên gia nước ngoài đến dạy học.", "cử học sinh đi du học.", "xây thư viện.", "xây bảo tàng."], c: 2 },
+      { type: 'mcq', q: "Công trình nào được mệnh danh là \"nằm mộ, lăng mộ đẹp nhất thế gian\"?", o: ["Thành Đô La Ki-la.", "Thành Đô ở A-gra.", "Lăng Ta-giơ Ma-han.", "Thành cổ Đê-li."], c: 2 },
+      { type: 'mcq', q: "Bên cạnh kiến trúc, hình thức nghệ thuật nào được khuyến khích trong hoàng tộc Mô-gôn?", o: ["Hội họa", "Chạm trổ", "Tạc tượng", "Điêu khắc"], c: 0 },
+      { type: 'mcq', q: "Nét nổi bật của văn hóa các dân tộc Đông Nam Á có điểm gì nổi bật?", o: ["chịu ảnh hưởng của văn hóa Trung Quốc.", "chịu ảnh hưởng của văn hóa Ấn Độ.", "nền văn hóa mang tính bản địa sâu sắc.", "tiếp thu có chọn lọc những ảnh hưởng văn hóa bên ngoài, kết hợp với nền văn hóa bản địa, xây dựng một nền văn hóa riêng và độc đáo."], c: 3 },
+      { type: 'mcq', q: "Lãnh thổ Cam-pu-chia được mở rộng nhất là dưới thời vua", o: ["Giay-a-vác-man V.", "Giay-a-vác-man VI.", "Giay-a-vác-man VII.", "Giay-a-vác-man VIII."], c: 2 },
+      { type: 'mcq', q: "Nội dung nào sau đây không phản ánh đúng tình hình Cam-pu-chia thời Ăng-co?", o: ["Kinh tế phát triển mạnh, xã hội ổn định.", "Nhiều công trình kiến trúc đồ sộ, độc đáo được xây dựng.", "Chuyên kinh đô về Phnôm Pênh.", "Lãnh thổ được mở rộng."], c: 2 },
+      { type: 'mcq', q: "Chủ nhân đầu tiên sinh sống trên lãnh thổ Lào là", o: ["người Thái.", "Người Lào Lùm.", "Người Lào Thơng.", "người Khơ-me."], c: 2 },
+      { type: 'mcq', q: "Văn hóa truyền thống Lào nổi tiếng với điệu múa nào sau đây?", o: ["Múa sạp", "Múa Áp-sa-ra (Apsara)", "Múa khèn", "Múa Lăm-vông"], c: 3 }
+    ]
+  },
+  'dl': {
+    name: 'Địa lý',
+    questions: [
+      { type: 'mcq', q: "Tính đến năm 2020, số thành viên của Liên minh Châu Âu là", o: ["26 thành viên.", "27 thành viên.", "28 thành viên.", "29 thành viên."], c: 1 },
+      { type: 'mcq', q: "Các quốc gia nào sau đây là thành viên của Liên minh Châu Âu đến năm 2020?", o: ["Anh, Pháp, Mỹ.", "Pháp, Tây Ban Nha, Bê – la – rút.", "Đức, Italia, Hà Lan.", "Anh, Đức, Pháp."], c: 2 },
+      { type: 'mcq', q: "Số dân của Liên minh châu Âu vào năm 2020 là", o: ["447,7 triệu người.", "474,7 triệu người.", "474,4 triệu người.", "744,7 triệu người."], c: 0 },
+      { type: 'mcq', q: "Tên gọi viết tắt của Liên minh châu Âu là", o: ["EC.", "EU.", "ECSC.", "EEC."], c: 1 },
+      { type: 'mcq', q: "Phía tây của châu Á tiếp giáp", o: ["châu Âu.", "châu Phi.", "Thái Bình Dương.", "Ấn Độ Dương."], c: 0 },
+      { type: 'mcq', q: "Diện tích phần lãnh thổ đất liền của châu Á là", o: ["41,5 triệu km².", "44,4 triệu km².", "10,5 triệu km².", "54,1 triệu km²."], c: 0 },
+      { type: 'mcq', q: "Địa hình chiếm ưu thế ở châu Á là", o: ["núi, cao nguyên.", "đồng bằng, đồi.", "bồn địa, cao nguyên.", "cao nguyên, đồng bằng."], c: 0 },
+      { type: 'mcq', q: "Dãy núi cao và đồ sộ nhất châu Á là", o: ["Hi-ma-lay-a.", "Côn Luân.", "Thiên Sơn.", "Nam Sơn."], c: 0 },
+      { type: 'mcq', q: "Khoáng sản nổi bật của châu Á là", o: ["dầu mỏ và khí đốt", "vàng và kim cương.", "than và sắt.", "dầu mỏ và than."], c: 0 },
+      { type: 'mcq', q: "Kiểu khí hậu chiếm diện tích lớn nhất ở châu Á là", o: ["khí hậu lục địa.", "khí hậu hải dương.", "khí hậu Địa Trung Hải.", "khí hậu cực đới."], c: 0 },
+      { type: 'mcq', q: "Kiểu khí hậu gió mùa phân bố chủ yếu ở", o: ["phía Bắc và trung tâm của châu Á.", "phía Tây và Tây Nam châu Á.", "phía Nam, Đông và Đông Nam châu Á.", "phía Nam, Đông Nam và Tây Nam châu Á."], c: 2 },
+      { type: 'mcq', q: "Kiểu khí hậu lục địa phân bố ở", o: ["trung tâm của châu Á.", "phía Đông châu Á.", "phía Đông Nam châu Á.", "phía Nam châu Á."], c: 0 },
+      { type: 'mcq', q: "Sông ngòi châu Á có đặc điểm là", o: ["mạng lưới sông phân bố không đều, có nhiều con sông lớn.", "mạng lưới sông ngòi kém phát triển, lưu lượng nước ít quanh năm.", "khu vực trung tâm có nhiều hệ thống sông lớn, chảy dài.", "khu vực khô hạn có mạng lưới sông ngòi phát triển."], c: 0 },
+      { type: 'mcq', q: "Năm 2020, so với thế giới dân số Châu Á chiếm khoảng", o: ["40%.", "50%.", "60%.", "70%."], c: 2 },
+      { type: 'mcq', q: "Đâu là đặc điểm cơ cấu dân số theo nhóm tuổi ở châu Á?", o: ["Cơ cấu dân số già.", "Cơ cấu dân số rất trẻ và không thay đổi.", "Cơ cấu dân số trẻ, đang có xu hướng già hóa.", "Cơ cấu dân số ổn định, tỉ lệ người già giảm đi."], c: 2 },
+      { type: 'mcq', q: "Cơ cấu dân số theo giới của châu Á có đặc điểm là", o: ["tỉ lệ nam cao hơn tỉ lệ nữ.", "tỉ lệ nữ cao hơn tỉ lệ nam.", "tỉ lệ nam và nữ cân bằng tuyệt đối.", "nam chiếm tỉ lệ áp đảo so với nữ."], c: 0 },
+      { type: 'mcq', q: "Dân số của châu Á (không tính Liên Bang Nga) năm 2020 là", o: ["6,64 tỉ người.", "4,64 tỉ người.", "6,46 tỉ người.", "4,46 tỉ người."], c: 1 },
+      { type: 'mcq', q: "Dân cư châu Á tập trung chủ yếu ở các khu vực", o: ["Đông Á, Đông Nam Á, Nam Á.", "Bắc Á, Đông Nam Á, Đông Á.", "Trung Á, Nam Á, Đông Nam Á.", "Bắc Á, Trung Á, Tây Nam Á."], c: 0 },
+      { type: 'mcq', q: "Dựa vào Tập bản đồ Lịch sử và Địa lí 7 trang 11, phần lớn lãnh thổ Bắc Á có kiểu thảm thực vật là", o: ["rừng lá rộng.", "đài nguyên.", "rừng tai - ga.", "rừng ngập mặn."], c: 2 },
+      { type: 'mcq', q: "Dựa vào Tập bản đồ Lịch sử và Địa lí 7 trang 11, kiểu thảm thực vật chủ yếu ở Đông Nam Á là", o: ["đài nguyên.", "rừng tai - ga.", "rừng lá rộng.", "rừng nhiệt đới ẩm."], c: 3 },
+      {
+        type: 'tf',
+        q: "Xác định đúng sai về Liên minh châu Âu:",
+        statements: [
+          "Số thành viên của Liên minh châu Âu từ năm 2020 trở đi là 27 thành viên",
+          "Liên minh châu Âu đã từng có 28 thành viên",
+          "Vào năm 2020, diện tích của mọi quốc gia trong liên minh châu Âu là 4.1 triệu km2",
+          "Vào năm 2020, số dân của mọi quốc gia trong liên minh châu Âu là 474.4 triệu người"
+        ],
+        answers: [true, true, true, false]
+      },
+      {
+        type: 'tf',
+        q: "Xác định đúng sai về Liên minh châu Âu và tiền thân:",
+        statements: [
+          "Liên minh châu Âu được viết tắt là EC",
+          "Tiền thân của liên minh châu Âu là Cộng đồng Kinh tế châu Âu",
+          "Cộng đồng Kinh tế châu Âu được thành lập với 6 quốc gia thành viên thành viên là Đức, Pháp, Bỉ, Hà Lan, I-ta-li-a và Lúc-xem-bua (Luxembourg)",
+          "Cộng đồng Kinh tế châu Âu được viết tắt là EEC"
+        ],
+        answers: [false, true, true, true]
+      },
+      {
+        type: 'tf',
+        q: "Xác định đúng sai về kinh tế Liên minh châu Âu:",
+        statements: [
+          "Liên minh châu Âu là một trong bốn trung tâm kinh tế lớn của thế giới",
+          "Năm 2020, Tổng sản phẩm trong nước (GDP) đạt hơn 15 nghìn tỉ USD (xếp thứ 2 thế giới)",
+          "Liên minh châu Âu là trung tâm dịch vụ và công nghiệp hàng đầu thế giới",
+          "Liên minh châu Âu giữ vai trò quan trọng đối với hoạt động tài chính - ngân hàng, giao thông vận tải, truyền thông, ngành công nghiệp công nghệ cao,..."
+        ],
+        answers: [false, true, true, true]
+      },
+      {
+        type: 'tf',
+        q: "Xác định đúng sai về đối tác và tiền tệ của Liên minh châu Âu:",
+        statements: [
+          "Đối tác kinh tế lớn nhất của Liên minh châu Âu là các quốc gia ở Bắc Mỹ và châu Á - Thái Bình Dương",
+          "Đồng tiền chung châu Âu (Ơ-rô) bắt đầu được sử dụng từ năm 2000",
+          "Đến năm 2020, có 20 quốc gia thành viên của Liên minh châu Âu sử dụng Ơ-rô (Euro) là đồng tiền chính thức của quốc gia mình",
+          "Trụ sở Ủy ban châu Âu nằm ở Bỉ"
+        ],
+        answers: [true, true, true, true]
+      }
+    ]
+  }
     }; // end subjectData
 
     // NOTE: To keep this response focused on the new Tin học addition, I left the original
@@ -991,7 +1112,9 @@
     const selectTinHoc = document.getElementById('selectTinHoc');
     const selectSinh = document.getElementById('selectSinh');
 	const selectHoa = document.getElementById('selectHoa');
-	const selectLy = document.getElementById('selectLy');
+const selectLy = document.getElementById('selectLy');
+const selectLichSu = document.getElementById('selectLichSu');
+const selectDiaLy = document.getElementById('selectDiaLy');
 
     const backToSubject = document.getElementById('backToSubject');
     const subjectTitle = document.getElementById('subjectTitle');
@@ -1663,6 +1786,23 @@ selectLy.addEventListener('click', () => {
   currentSubject = 'ly';
   subjectTitle.textContent = subjectData.ly.fullName || 'Vật lý';
   fullModeDesc.textContent = `Làm hết ${subjectData.ly.questions ? subjectData.ly.questions.length : '50'} câu hỏi`;
+  subjectScreen.classList.add('hidden');
+  modeScreen.classList.remove('hidden');
+});
+// Button Lịch sử
+selectLichSu.addEventListener('click', () => {
+  currentSubject = 'ls';
+  subjectTitle.textContent = subjectData.ls.fullName || 'Lịch sử';
+  fullModeDesc.textContent = `Làm hết ${subjectData.ls.questions ? subjectData.ls.questions.length : '22'} câu hỏi`;
+  subjectScreen.classList.add('hidden');
+  modeScreen.classList.remove('hidden');
+});
+
+// Button Địa lý
+selectDiaLy.addEventListener('click', () => {
+  currentSubject = 'dl';
+  subjectTitle.textContent = subjectData.dl.fullName || 'Địa lý';
+  fullModeDesc.textContent = `Làm hết ${subjectData.dl.questions ? subjectData.dl.questions.length : '24'} câu hỏi`;
   subjectScreen.classList.add('hidden');
   modeScreen.classList.remove('hidden');
 });
